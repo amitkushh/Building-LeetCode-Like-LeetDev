@@ -95,15 +95,7 @@ export const createProblem = async (req, res) => {
 
 export const getAllProblems = async (req, res) => {
   try {
-    const problems = await db.problem.findMany({
-      include: {
-        solvedBy: {
-          where: {
-            userId: req.user.id,
-          },
-        },
-      },
-    });
+    const problems = await db.problem.findMany();
 
     if (!problems) {
       return res.status(404).json({
@@ -157,8 +149,78 @@ export const getProblemById = async (req, res) => {
 //Updating Problem Logic
 
 export const updateProblem = async (req, res) => {
+  const {
+    title,
+    description,
+    difficulty,
+    tags,
+    examples,
+    constrains,
+    testcases,
+    codeSnippets,
+    referenceSolutions,
+  } = req.body;
   try {
-  } catch (error) {}
+    for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
+      const languageId = getJudge0LanguageId(language);
+
+      if (!languageId) {
+        return res.status(400).json({
+          message: `Language ${language} is not supported`,
+        });
+      }
+
+      const submissions = testcases.map(({ input, output }) => ({
+        source_code: solutionCode,
+        language_id: languageId,
+        stdin: input,
+        expected_output: output,
+      }));
+
+      const submissionResults = await submitBatch(submissions);
+
+      const tokens = submissionResults.map((res) => res.token);
+
+      const results = await pollingBatchResults(tokens);
+
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        console.log("result", result);
+
+        if (result.status.id !== 3) {
+          return res.status(400).json({
+            message: `Testcase ${i + 1} failed for language ${language}`,
+          });
+        }
+      }
+    }
+
+    const newProblem = await db.problem.update({
+      data: {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constrains,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+        userId: req.user.id,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Problem updated successfully",
+      problem: newProblem,
+    });
+  } catch (error) {
+    console.error("Error while updating problem", error);
+    res.status(500).json({
+      message: "Error while Updating Problem",
+    });
+  }
 };
 
 //Delete Problem Logic
