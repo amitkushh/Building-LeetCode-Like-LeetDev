@@ -5,6 +5,8 @@ import {
   submitBatch,
 } from "../libs/judge0.lib.js";
 
+//Creating Problems Logic
+
 export const createProblem = async (req, res) => {
   const {
     title,
@@ -89,25 +91,61 @@ export const createProblem = async (req, res) => {
   }
 };
 
+//Fetching all Problems Logic
+
 export const getAllProblems = async (req, res) => {
   try {
-  } catch (error) {}
+    const problems = await db.problem.findMany({
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.user.id,
+          },
+        },
+      },
+    });
+
+    if (!problems) {
+      return res.status(404).json({
+        message: "No Problem Found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Problems Fetch Successfully",
+      success: true,
+      problems,
+    });
+  } catch (error) {
+    console.error("error while fetching problems", error);
+    res.status(500).json({
+      message: "Error while Fetching Problems",
+    });
+  }
 };
+
+//Fetching Problem By Id Logic
 
 export const getProblemById = async (req, res) => {
   try {
   } catch (error) {}
 };
 
+//Updating Problem Logic
+
 export const updateProblem = async (req, res) => {
   try {
   } catch (error) {}
 };
 
+//Delete Problem Logic
+
 export const deleteProblem = async (req, res) => {
   try {
   } catch (error) {}
 };
+
+//Fetching all Problems Solved By the User Logic
 
 export const getAllProblemsSolvedByUser = async (req, res) => {
   try {
