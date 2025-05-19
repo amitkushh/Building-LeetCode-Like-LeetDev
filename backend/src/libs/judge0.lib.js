@@ -1,3 +1,5 @@
+import axios from "axios"
+
 export const getJudge0LanguageId = (language) => {
   const languageMap = {
     "PYTHON": 71,
@@ -12,7 +14,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)); //ms = 
 
 export const pollingBatchResults = async (tokens) => {
   while (true) {
-    const { data } = await axios.gte(
+    const { data } = await axios.get(
       `${process.env.JUDGE0_API_URL}/submissions/batch`,
       {
         params: {

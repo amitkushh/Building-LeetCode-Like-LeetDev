@@ -35,7 +35,7 @@ export const createProblem = async (req, res) => {
         });
       }
 
-      const submissions = testcases.amp(({ input, output }) => ({
+      const submissions = testcases.map(({ input, output }) => ({
         source_code: solutionCode,
         language_id: languageId,
         stdin: input,
@@ -50,7 +50,7 @@ export const createProblem = async (req, res) => {
 
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
-        constrains.log("Result", result);
+        console.log("Result", result);
 
         if (result.status.id !== 3) {
           return res.status(400).json({
