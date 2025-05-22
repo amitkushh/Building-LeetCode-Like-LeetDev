@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 //All Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/problems", problemRoutes)
+app.use("/api/v1/execute-code", executionRoute)
 
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
