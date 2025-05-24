@@ -1,12 +1,29 @@
-import "./App.css";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
+  let authUser = null;
+
   return (
-    <>
-      <div>
-        <h1 className="text-2xl font-bold text-red-500">hello</h1>
-      </div>
-    </>
+    <div className="flex flex-col justify-start items-center">
+      <Routes>
+        <Route
+          path="/"
+          element={authUser ? <HomePage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/signup"
+          element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
+        />
+      </Routes>
+    </div>
   );
 }
 
