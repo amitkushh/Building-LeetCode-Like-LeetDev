@@ -163,7 +163,7 @@ exports.Prisma.SubmissionScalarFieldEnum = {
   memory: 'memory',
   time: 'time',
   createdAt: 'createdAt',
-  updateAt: 'updateAt'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.TestCaseResultScalarFieldEnum = {
