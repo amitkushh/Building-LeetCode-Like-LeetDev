@@ -1,10 +1,10 @@
-import axios from "axios"
+import axios from "axios";
 
 export const getJudge0LanguageId = (language) => {
   const languageMap = {
-    "PYTHON": 71,
-    "JAVA": 62,
-    "JAVASCRIPT": 63,
+    PYTHON: 71,
+    JAVA: 62,
+    JAVASCRIPT: 63,
   };
 
   return languageMap[language.toUpperCase()];
@@ -20,6 +20,9 @@ export const pollingBatchResults = async (tokens) => {
         params: {
           tokens: tokens.join(","),
           base64_encoded: false,
+        },
+        headers: {
+          Authorization: `Bearer ${process.env.SULU_API_KEY}`,
         },
       }
     );
@@ -40,6 +43,10 @@ export const submitBatch = async (submissions) => {
     `${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`,
     {
       submissions,
+
+      headers: {
+        Authorization: `Bearer ${process.env.SULU_API_KEY}`,
+      },
     }
   );
 
@@ -47,13 +54,13 @@ export const submitBatch = async (submissions) => {
   return data;
 };
 
-export function getLanguageName(languageId){
-  const LANGUAGE_NAMES= {
-        74: "TypeScript",
-        63: "JavaScript",
-        71: "Python",
-        62: "Java",
-  }
+export function getLanguageName(languageId) {
+  const LANGUAGE_NAMES = {
+    74: "TypeScript",
+    63: "JavaScript",
+    71: "Python",
+    62: "Java",
+  };
 
-  return LANGUAGE_NAMES[languageId] || "unknown"
+  return LANGUAGE_NAMES[languageId] || "unknown";
 }
