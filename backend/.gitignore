@@ -121,4 +121,6 @@ dist
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
 
 
-/backend/src/generated/
+/src/generated/
+**/generated/
+**/generated/**
