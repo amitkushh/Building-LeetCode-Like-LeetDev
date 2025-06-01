@@ -1,10 +1,11 @@
 import React from "react";
+import Hero from "@/components/Hero"
 
 function HomePage() {
   return (
-    <div>
-      <h1>home</h1>
-    </div>
+    <main>
+      <Hero />
+    </main>
   );
 }
 

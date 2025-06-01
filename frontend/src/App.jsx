@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import Dashboard from "./pages/Dashboard";
-import { Loader } from "lucide-react";
+import { LoaderCircle } from 'lucide-react';
 import { useAuthStore } from "./store/useAuthStore";
 import Layout from "./Layout/Layout";
 
@@ -18,7 +18,7 @@ function App() {
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
+        <LoaderCircle className="size-10 animate-spin" />
       </div>
     );
   }
